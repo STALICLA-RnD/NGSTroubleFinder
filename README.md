@@ -57,6 +57,11 @@ conda install bioconda::htslib
 python3 -m pip install .
 ```
 
+You can find a docker image [here](https://hub.docker.com/r/staliclarnd/ngstroublefinder)
+```
+docker pull staliclarnd/ngstroublefinder
+```
+
 ## Usage
 
 You can run the installed tool `ngsTroubleFinder` to run an analysis
@@ -147,7 +152,7 @@ pileupEngine.genotype("test.bam", vcf="positions.vcf", outFile="test.snps")
 Here we are computing a pileup of `test.bam` on a personalized `positions.vcf` outputting the pileup into `test.snps`
 
 > [!CAUTION]
-> The genotype is a heuristic and its intended to be used only inside the tool. Trust it at your own risk.
+> Genotyping is performed using a heuristic approach, which may not be optimal, especially at low coverage. These results are for internal use only and should be used with caution, as their accuracy is not guaranteed.
 
 
 ## Development
