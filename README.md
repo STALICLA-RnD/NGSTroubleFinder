@@ -115,7 +115,7 @@ NA12891	/tmp/test/NA12891.cram	DNA	Male
 
 Run NGSTroubleFinder
 ```
-ngsTroubleFinder -m /tmp/test/metadata.tsv -o /tmp/test/analysis/ -r /tmp/test/reference.fa.gz
+ngsTroubleFinder -m /tmp/test/metadata.tsv -o /tmp/test/analysis/ -r /tmp/test/reference.fa
 ```
 
 ### File Formats
