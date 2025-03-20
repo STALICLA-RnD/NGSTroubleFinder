@@ -33,7 +33,7 @@ It analyzes:
 The project have been tested with
 - python==3.10.10
 - matplotlib==3.8.2
-- numpy==1.26.0
+- numpy>=1.26.0
 - pandas==2.2.0
 - onnxruntime==1.20.1
 - scipy==1.12.0
@@ -57,6 +57,9 @@ Alternatively you can use Conda
 conda install bioconda::htslib
 python3 -m pip install .
 ```
+
+You can find the executable in ```<python-env-path>/bin/ngsTroubleFinder```
+
 
 You can find a docker image [here](https://hub.docker.com/r/staliclarnd/ngstroublefinder)
 ```
