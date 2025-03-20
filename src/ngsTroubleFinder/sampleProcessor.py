@@ -75,6 +75,7 @@ class SampleProcessor:
         return haplotypeDetector.detectMultipleHaplotypes(
             pileup,
             self.sample.bam,
+            referenceGenome=self.referenceGenome,
             outFile=f"{self.outFolders['haplotypes']}/{self.sample.name}.tsv",
         )
 
