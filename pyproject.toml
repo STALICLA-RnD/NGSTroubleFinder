@@ -1,6 +1,6 @@
 [project]
 name = "NGSTroubleFinder"
-version = "1.0.0"
+version = "1.0.1"
 authors = [
   { name="Samuel Valentini", email="samuel.valentini@stalicla.com" },
 ]
