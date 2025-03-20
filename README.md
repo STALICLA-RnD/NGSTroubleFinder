@@ -19,6 +19,7 @@ It analyzes:
     - [Installation](#installation)
   - [Usage](#usage)
   - [Output](#output)
+  - [Example](#Example)
   - [File Format](#file-format)
   - [Development](#development)
     - [Running Locally](#running-locally)
@@ -91,6 +92,31 @@ docker run --rm -it -v registry-ui.local.stalicladds.com/ngsTroubleFinder:develo
 - pileups: folder cointaing all samples' pileups
 - haplotypes: folder containing all the samples' haplotype informations
 - relatedness: folder containig the relatdness table statistics
+
+
+## Example
+Download some data and the reference genome (may require some time)
+```
+wget ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000_genomes_project/data/CEU/NA12878/exome_alignment/NA12878.alt_bwamem_GRCh38DH.20150826.CEU.exome.cram -O /tmp/test/NA12878.cram
+wget ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000_genomes_project/data/CEU/NA12878/exome_alignment/NA12878.alt_bwamem_GRCh38DH.20150826.CEU.exome.cram.crai -O /tmp/test/NA12878.cram.crai
+
+wget ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000_genomes_project/data/CEU/NA12891/exome_alignment/NA12891.alt_bwamem_GRCh38DH.20150826.CEU.exome.cram -O /tmp/test/NA12891.cram
+wget ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000_genomes_project/data/CEU/NA12891/exome_alignment/NA12891.alt_bwamem_GRCh38DH.20150826.CEU.exome.cram.crai -O /tmp/test/NA12891.cram.crai
+
+wget ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/technical/reference/GRCh38_reference_genome/GRCh38_full_analysis_set_plus_decoy_hla.fa -O /tmp/test/reference.fa
+```
+
+Create the file ```/tmp/test/metadata.tsv```
+```
+Sample_Name	Bam_Path	Sequencing	Sex
+NA12878	/tmp/test/NA12878.cram	DNA	Female
+NA12891	/tmp/test/NA12891.cram	DNA	Male
+```
+
+Run NGSTroubleFinder
+```
+ngsTroubleFinder -m /tmp/test/metadata.tsv -o /tmp/test/analysis/ -r /tmp/test/reference.fa.gz
+```
 
 ### File Formats
 
