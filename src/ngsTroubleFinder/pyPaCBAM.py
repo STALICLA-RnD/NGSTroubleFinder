@@ -38,26 +38,7 @@ class PyPaCBAM:
     ):
         self.minBaseQuality = minBaseQuality
         self.minReadQuality = minReadQuality
-        libfile = pathlib.Path(__file__).parent / "_pyPaCBAM.so"
-        self._pileupEngine = ctypes.CDLL(str(libfile))
-
-        self._pileupEngine.openHtsFile.argtypes = (
-            ctypes.c_char_p,
-            ctypes.c_char_p,
-            ctypes.c_char_p,
-            ctypes.POINTER(NgsFile),
-        )
-
-        self._pileupEngine.closeHtsFile.argtypes = (ctypes.POINTER(NgsFile),)
-
-        self._pileupEngine.pileup.argtypes = (
-            ctypes.POINTER(NgsFile),  # file
-            ctypes.c_char_p,  # chrom
-            ctypes.c_int,  # position
-            ctypes.c_int,  # quality
-            ctypes.c_int,  # read quality
-            ctypes.POINTER(ctypes.c_int),  # results
-        )
+        self.libfile = pathlib.Path(__file__).parent / "_pyPaCBAM.so"
 
         if uncalledThreshold > heteroMinValue:
             raise ValueError(
@@ -189,6 +170,26 @@ class PyPaCBAM:
                 path to the reference genome
 
         """
+        self._pileupEngine = ctypes.CDLL(str(self.libfile))
+
+        self._pileupEngine.openHtsFile.argtypes = (
+            ctypes.c_char_p,
+            ctypes.c_char_p,
+            ctypes.c_char_p,
+            ctypes.POINTER(NgsFile),
+        )
+
+        self._pileupEngine.closeHtsFile.argtypes = (ctypes.POINTER(NgsFile),)
+
+        self._pileupEngine.pileup.argtypes = (
+            ctypes.POINTER(NgsFile),  # file
+            ctypes.c_char_p,  # chrom
+            ctypes.c_int,  # position
+            ctypes.c_int,  # quality
+            ctypes.c_int,  # read quality
+            ctypes.POINTER(ctypes.c_int),  # results
+        )
+
         results = []
         # ngsFile = pysam.AlignmentFile(ngsFile, reference_filename=reference)
         ngsFile = NgsFile(None, None, None)

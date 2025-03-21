@@ -50,31 +50,7 @@ class HaplotypeDetector:
         self.minBaseQuality = minBaseQuality
         self.minReadQuality = minReadQuality
 
-        libfile = pathlib.Path(__file__).parent / "_pyPaCBAM.so"
-        self._pileupEngine = ctypes.CDLL(str(libfile))
-
-        self._pileupEngine.openHtsFile.argtypes = (
-            ctypes.c_char_p,
-            ctypes.c_char_p,
-            ctypes.c_char_p,
-            ctypes.POINTER(NgsFile),
-        )
-
-        self._pileupEngine.closeHtsFile.argtypes = (ctypes.POINTER(NgsFile),)
-
-        self._pileupEngine.inferHaplotype.argtypes = (
-            ctypes.POINTER(NgsFile),  # file
-            ctypes.c_char_p,  # chrom
-            ctypes.c_int,  # position
-            ctypes.c_int,  # quality
-            ctypes.c_char,  # ref base variant 1
-            ctypes.c_char,  # alt base variant 1
-            ctypes.c_char,  # ref base variant 2
-            ctypes.c_char,  # alt base variant 2
-            ctypes.c_int,  # baseQuality
-            ctypes.c_int,  # readQuality
-            ctypes.POINTER(ctypes.c_int),  # results
-        )
+        self.libfile = pathlib.Path(__file__).parent / "_pyPaCBAM.so"
 
     def _filterPileupByGroups(self, pileup, groups, minCoverage=20):
         """
@@ -192,6 +168,32 @@ class HaplotypeDetector:
             path to the reference genome (used only with crams)
 
         """
+
+        self._pileupEngine = ctypes.CDLL(str(self.libfile))
+
+        self._pileupEngine.openHtsFile.argtypes = (
+            ctypes.c_char_p,
+            ctypes.c_char_p,
+            ctypes.c_char_p,
+            ctypes.POINTER(NgsFile),
+        )
+
+        self._pileupEngine.closeHtsFile.argtypes = (ctypes.POINTER(NgsFile),)
+
+        self._pileupEngine.inferHaplotype.argtypes = (
+            ctypes.POINTER(NgsFile),  # file
+            ctypes.c_char_p,  # chrom
+            ctypes.c_int,  # position
+            ctypes.c_int,  # quality
+            ctypes.c_char,  # ref base variant 1
+            ctypes.c_char,  # alt base variant 1
+            ctypes.c_char,  # ref base variant 2
+            ctypes.c_char,  # alt base variant 2
+            ctypes.c_int,  # baseQuality
+            ctypes.c_int,  # readQuality
+            ctypes.POINTER(ctypes.c_int),  # results
+        )
+
         analyzedGroups = []
 
         ngsFile = NgsFile(None, None, None)
