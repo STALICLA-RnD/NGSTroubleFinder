@@ -31,7 +31,7 @@ It analyzes:
 ### Prerequisites
 
 The project have been tested with
-- python==3.10.10
+- python==3.10.10 (versions >=3.12 know to cause problems with dependencies in certain OS)
 - matplotlib==3.8.2
 - numpy>=1.26.0
 - pandas==2.2.0
@@ -52,13 +52,15 @@ sudo apt install -y --no-install-recommends python3-dev libhts-dev
 python3 -m pip install .
 ```
 
-Alternatively you can use Conda
+Alternatively you can use Conda inside the project where the repository was cloned
+
 ```
-conda install bioconda::htslib
+conda create -n "ngsTroubleFinder" python=3.10 bioconda::htslib
+conda activate ngsTroubleFinder
 python3 -m pip install .
 ```
 
-You can find the executable in ```<python-env-path>/bin/ngsTroubleFinder```
+You can find the executable in ```<path_to_conda>/bin/ngsTroubleFinder```
 
 
 You can find a docker image [here](https://hub.docker.com/r/staliclarnd/ngstroublefinder)
