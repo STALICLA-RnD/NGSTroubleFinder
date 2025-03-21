@@ -9,8 +9,8 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y --no-install-recommends gcc libhts-dev build-essential && rm -rf /var/lib/apt/lists/*
 
 #Install the requirements and the module
-RUN python3 -m pip install --upgrade --no-cache-dir pip==23.0.1 && \
-  python3 -m pip --no-cache-dir install --upgrade build==0.10.0 && \
+RUN python3 -m pip install --upgrade --no-cache-dir pip && \
+  python3 -m pip --no-cache-dir install --upgrade build && \
   python3 -m build && \
   python3 -m pip install --no-cache-dir .
 
