@@ -55,12 +55,12 @@ python3 -m pip install .
 Alternatively you can use Conda inside the project where the repository was cloned
 
 ```
-conda create -n "ngsTroubleFinder" python=3.10 bioconda::htslib
-conda activate ngsTroubleFinder
+conda create -n "my_env" python=3.10 bioconda::htslib
+conda activate my_env
 python3 -m pip install .
 ```
 
-You can find the executable in ```<path_to_conda>/bin/ngsTroubleFinder```
+You can find the executable in ```<path_to_my_env>/bin/ngsTroubleFinder```
 
 
 You can find a docker image [here](https://hub.docker.com/r/staliclarnd/ngstroublefinder)
@@ -102,6 +102,7 @@ docker run --rm -it -v registry-ui.local.stalicladds.com/ngsTroubleFinder:develo
 ## Example
 Download some data and the reference genome (may require some time)
 ```
+mkdir /tmp/test/
 wget ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000_genomes_project/data/CEU/NA12878/exome_alignment/NA12878.alt_bwamem_GRCh38DH.20150826.CEU.exome.cram -O /tmp/test/NA12878.cram
 wget ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000_genomes_project/data/CEU/NA12878/exome_alignment/NA12878.alt_bwamem_GRCh38DH.20150826.CEU.exome.cram.crai -O /tmp/test/NA12878.cram.crai
 

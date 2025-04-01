@@ -227,12 +227,12 @@ class TroubleFinder:
 
         if sample.transcriptomicSex == "Unknown":
             if sample.originalSex != sample.genomicSex:
-                qc += ["SEX"]
+                qc += ["SEX MISMATCH"]
         else:
             if not (
                 sample.originalSex == sample.genomicSex == sample.transcriptomicSex
             ):
-                qc += ["SEX"]
+                qc += ["SEX MISMATCH"]
 
         if sample.contamination > 0.01:
             qc += ["CONTAMINATION"]
