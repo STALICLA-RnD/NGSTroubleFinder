@@ -24,6 +24,7 @@ It analyzes:
   - [Development](#development)
     - [Running Locally](#running-locally)
     - [Testing](#testing)
+  - [Train Dataset](#Train-Dataset)
   - [Contact](#contact)
 
 ## Getting Started
@@ -65,7 +66,7 @@ You can find the executable in ```<path_to_my_env>/bin/ngsTroubleFinder```
 
 You can find a docker image [here](https://hub.docker.com/r/staliclarnd/ngstroublefinder)
 ```
-docker pull staliclarnd/ngstroublefinder
+docker pull staliclarnd/ngstroublefinder:1.0.3
 ```
 
 ## Usage
@@ -83,7 +84,7 @@ ngsTroubleFinder -m metadata.tsv -o /analysis/output -t transcriptomicProfile.ts
 
 Alternatively you can use the provided docker container in the same way.
 ```
-docker run --rm -it -v registry-ui.local.stalicladds.com/ngsTroubleFinder:development \
+docker run --rm -it staliclarnd/ngstroublefinder:1.0.3 \
   ngsTroubleFinder \
 	-m metadata.tsv \
 	-t transcriptomicProfile.tsv \
@@ -196,6 +197,10 @@ After installing you can run the tool by invoking it as `ngsTroubleFinder`
 
 Tests are located in the test folder. You can run the test by running
 `python3 test/<test_file.py>`
+
+## Train Dataset
+The train dataset used to train the model is available at [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.15166523.svg)](https://doi.org/10.5281/zenodo.15166523)
+
 
 ## Contact
 
