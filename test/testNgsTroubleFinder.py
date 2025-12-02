@@ -124,8 +124,8 @@ chr1	3856982	3857024	A	C	C	G	3	16	11	0	0	True"""
             self.assertEqual(mock_processSample.call_count, 2)
 
     def test_computeRelatedness(self):
-        sample1 = Sample("Test01", "test.bam", "RNA", "Female")
-        sample2 = Sample("Test02", "test.bam", "DNA", "Male")
+        sample1 = Sample("Test01", "test.bam", "RNA", "Female", contamination=0.1)
+        sample2 = Sample("Test02", "test.bam", "DNA", "Male", contamination=0.0)
 
         sample_list = [sample1, sample2]
 
@@ -134,8 +134,8 @@ chr1	3856982	3857024	A	C	C	G	3	16	11	0	0	True"""
         ) as mock_relatedness:
             expected = pd.read_csv(
                 StringIO(
-                    """Sample1\tSample2\trelatedness\tibs2
-Test01\tTest02\t0.5\t100"""
+                    """Sample1\tSample2\trelatedness\tibs2\tAverage Contamination
+Test01\tTest02\t0.5\t100\t0.05"""
                 ),
                 sep="\t",
             )

@@ -64,14 +64,13 @@ class TestMain(unittest.TestCase):
 
     @mock.patch("matplotlib.pyplot.savefig")
     def test_plotRelatedness(self, mock_run):
-        relatednessTable = pd.DataFrame(
-            {
-                "Sample1": ["Sample1", "Sample2"],
-                "Sample2": ["Sample2", "Sample3"],
-                "relatedness": [0.3, 0.1],
-                "ibs2": [40, 50],
-            }
-        )
+        relatednessTable = pd.DataFrame({
+            "Sample1": ["Sample1", "Sample2"],
+            "Sample2": ["Sample2", "Sample3"],
+            "relatedness": [0.3, 0.1],
+            "ibs2": [40, 50],
+            "Average Contamination": [0.1, 0.02],
+        })
 
         self.plotter.plotRelatedness(relatednessTable)
         mock_run.assert_called()
@@ -122,14 +121,12 @@ class TestMain(unittest.TestCase):
 
         sample_list = [sample1, sample2]
 
-        relatednessTable = pd.DataFrame(
-            {
-                "Sample1": ["Sample1", "Sample2"],
-                "Sample2": ["Sample2", "Sample3"],
-                "relatedness": [0.3, 0.1],
-                "ibs2": [40, 50],
-            }
-        )
+        relatednessTable = pd.DataFrame({
+            "Sample1": ["Sample1", "Sample2"],
+            "Sample2": ["Sample2", "Sample3"],
+            "relatedness": [0.3, 0.1],
+            "ibs2": [40, 50],
+        })
 
         report = pd.DataFrame.from_records(vars(sample) for sample in sample_list)
 

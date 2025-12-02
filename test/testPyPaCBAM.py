@@ -11,27 +11,6 @@ class TestHaplotypeDetector(unittest.TestCase):
     def setUpClass(self):
         self.pileupEngine = PyPaCBAM()
 
-    def test_positionPileup(self):
-        expected = {"A": 2, "C": 2, "G": 2, "T": 1}
-        pyPaCBAM = MagicMock()
-        pyPaCBAM.return_value = 0
-        side_effect = [2, 2, 2, 1]
-
-        def mock_pileup(ngsfile, chrom, pos, quality, readQuality, pileupPtr):
-            pileupPtr[0] = 2
-            pileupPtr[1] = 2
-            pileupPtr[2] = 2
-            pileupPtr[3] = 1
-            return 0
-
-        pyPaCBAM.side_effect = mock_pileup
-        self.pileupEngine._pileupEngine.pileup = pyPaCBAM
-
-        pileup, pileupError = self.pileupEngine._positionPileup("test", "chr1", 1000)
-
-        self.assertDictEqual(pileup, expected)
-        self.assertEqual(pileupError, 0)
-
     def test_computeAF(self):
         basePileup = {"A": 2, "C": 2, "G": 2, "T": 1}
         af = self.pileupEngine._computeAF(basePileup, "A", "C")

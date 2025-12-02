@@ -4,6 +4,7 @@ import pandas as pd
 import plotly.express as px
 import seaborn as sns
 from matplotlib.backends.backend_pdf import PdfPages
+import matplotlib.patches as patches
 
 
 class Plotter:
@@ -56,15 +57,13 @@ class Plotter:
         sampleNames = [s.name for s in sample_list]
         transcriptomicSex = [s.transcriptomicSex for s in sample_list]
 
-        toPlot = pd.DataFrame(
-            {
-                "Male Expression": maleExpression,
-                "Female Expression": femaleExpression,
-                "Original Sex": originalSex,
-                "Sample Name": sampleNames,
-                "Transcriptomic Sex": transcriptomicSex,
-            }
-        )
+        toPlot = pd.DataFrame({
+            "Male Expression": maleExpression,
+            "Female Expression": femaleExpression,
+            "Original Sex": originalSex,
+            "Sample Name": sampleNames,
+            "Transcriptomic Sex": transcriptomicSex,
+        })
 
         sns.scatterplot(
             x="Female Expression",
@@ -78,12 +77,33 @@ class Plotter:
 
         fig = plt.gcf()
         ax = plt.gca()
+        min_x, max_x = ax.get_xlim()
+        min_y, max_y = ax.get_ylim()
         fig.set_size_inches(10, 6)
 
         plt.axhline((236 + 1), color=self.staliclaColors[0])
         plt.axhline((1300 + 1), color=self.staliclaColors[0])
 
         plt.axvline((142 + 1), color=self.staliclaColors[1])
+
+        maleArea = patches.Rectangle(
+            (min_x, 1300 + 1),
+            abs(min_x) + 142 + 1,
+            max_y + 10,
+            facecolor=self.staliclaColors[0],
+            alpha=0.2,
+        )
+
+        femaleArea = patches.Rectangle(
+            (142 + 1, 0),
+            10 + abs(max_x),
+            236 + 1,
+            facecolor=self.staliclaColors[1],
+            alpha=0.2,
+        )
+
+        ax.add_patch(maleArea)
+        ax.add_patch(femaleArea)
 
         ax.set(xscale="log", yscale="log")
 
@@ -111,6 +131,30 @@ class Plotter:
                 "Female": self.staliclaColors[1],
             },
         )
+
+        full_fig = fig.full_figure_for_development(warn=False)
+        min_x, max_x = full_fig.layout.xaxis.range
+        min_y, max_y = full_fig.layout.yaxis.range
+
+        fig.add_shape(
+            type="rect",
+            x0=min_x,
+            y0=1300,
+            x1=142,
+            y1=max(1300, max_y),
+            fillcolor=self.staliclaColors[0],
+            opacity=0.2,
+        )
+        fig.add_shape(
+            type="rect",
+            x0=142,
+            y0=min_y,
+            x1=max(142, max_x),
+            y1=236,
+            fillcolor=self.staliclaColors[1],
+            opacity=0.2,
+        )
+
         fig.add_hline(236, fillcolor=self.staliclaColors[0])
         fig.add_hline(1300, fillcolor=self.staliclaColors[0])
 
@@ -134,15 +178,13 @@ class Plotter:
         sampleNames = [s.name for s in sample_list]
         genomicSex = [s.genomicSex for s in sample_list]
 
-        toPlot = pd.DataFrame(
-            {
-                "Y Chromosome Coverage": yCoverage,
-                "X Chromosome Heterozygosity": xHeterozygosity,
-                "Original Sex": originalSex,
-                "Sample Name": sampleNames,
-                "Genomic Sex": genomicSex,
-            }
-        )
+        toPlot = pd.DataFrame({
+            "Y Chromosome Coverage": yCoverage,
+            "X Chromosome Heterozygosity": xHeterozygosity,
+            "Original Sex": originalSex,
+            "Sample Name": sampleNames,
+            "Genomic Sex": genomicSex,
+        })
 
         sns.scatterplot(
             x="X Chromosome Heterozygosity",
@@ -156,10 +198,32 @@ class Plotter:
         plt.title("Genomic Sex")
 
         fig = plt.gcf()
+        ax = plt.gca()
+        min_x, max_x = ax.get_xlim()
+        min_y, max_y = ax.get_ylim()
         fig.set_size_inches(10, 6)
 
         plt.axhline(10, color=self.staliclaColors[0])
         plt.axvline(1, color=self.staliclaColors[1])
+
+        maleArea = patches.Rectangle(
+            (min_x, 10),
+            abs(min_x) + 1,
+            max_y,
+            facecolor=self.staliclaColors[0],
+            alpha=0.2,
+        )
+
+        femaleArea = patches.Rectangle(
+            (1, min_y),
+            max_x,
+            abs(min_y) + 10,
+            facecolor=self.staliclaColors[1],
+            alpha=0.2,
+        )
+
+        ax.add_patch(maleArea)
+        ax.add_patch(femaleArea)
 
         plt.savefig(
             f"{self.outFolders['images']}/genomicSex.png", bbox_inches="tight", dpi=300
@@ -185,6 +249,29 @@ class Plotter:
         fig.add_hline(10, fillcolor=self.staliclaColors[0])
         fig.add_vline(1, fillcolor=self.staliclaColors[1])
 
+        full_fig = fig.full_figure_for_development(warn=False)
+        min_x, max_x = full_fig.layout.xaxis.range
+        min_y, max_y = full_fig.layout.yaxis.range
+
+        fig.add_shape(
+            type="rect",
+            x0=min_x,
+            y0=10,
+            x1=1,
+            y1=max_y,
+            fillcolor=self.staliclaColors[0],
+            opacity=0.2,
+        )
+        fig.add_shape(
+            type="rect",
+            x0=1,
+            y0=min_y,
+            x1=max_x,
+            y1=10,
+            fillcolor=self.staliclaColors[1],
+            opacity=0.2,
+        )
+
         return fig.to_html(full_html=False, include_plotlyjs=False)
 
     def plotRelatedness(self, relatednessTable):
@@ -195,11 +282,18 @@ class Plotter:
         Args:
             sample_list: list of samples with the yCoverage and xHeterozygosity computed
         """
+
+        alpha = [
+            1 if contamination < 0.01 else 1 - (10 * (contamination))
+            for contamination in relatednessTable["Average Contamination"]
+        ]
+        alpha = [x if x > 0.1 else 0.1 for x in alpha]
         sns.scatterplot(
             x="relatedness",
             y="ibs2",
             data=relatednessTable,
             color=self.staliclaColors[0],
+            alpha=alpha,
         )
         plt.xlim(-0.3, 1)
         plt.xticks(np.arange(-0.3, 1.1, 0.1), rotation=45)
@@ -222,8 +316,9 @@ class Plotter:
             relatednessTable,
             x="relatedness",
             y="ibs2",
-            hover_data=["Sample1", "Sample2"],
+            hover_data=["Sample1", "Sample2", "Average Contamination"],
             color_discrete_sequence=self.staliclaColors,
+            opacity=alpha,
         )
         fig.add_vline(0.95, fillcolor=self.staliclaColors[0])
 
@@ -261,8 +356,12 @@ class Plotter:
                 class="collapse-content text-primary-content peer-checked:bg-secondary peer-checked:text-secondary-content">
                     <div class="hero bg-base-200">
                     <div class="hero-content flex-col lg:flex-row">
-                        {fig.to_html(
-                        full_html=False, include_plotlyjs=False,)}
+                        {
+                    fig.to_html(
+                        full_html=False,
+                        include_plotlyjs=False,
+                    )
+                }
                     </div>
                 </div>
             </div>
@@ -503,7 +602,7 @@ class Plotter:
         <div class="divider"></div>
         <h2 class="text-3xl font-bold">Allelic Fraction Distributions</h2>
         <div class="divider"></div>
-        {''.join(allelicFractionPlots)}
+        {"".join(allelicFractionPlots)}
 
         </div>
         </div>

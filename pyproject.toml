@@ -1,6 +1,6 @@
 [project]
 name = "NGSTroubleFinder"
-version = "1.0.3"
+version = "1.0.4"
 authors = [
   { name="Samuel Valentini", email="samuel.valentini@stalicla.com" },
 ]
@@ -19,8 +19,9 @@ dependencies = [
   "pandas==2.2.0",
   "onnxruntime==1.20.1",
   "scipy==1.12.0",
-  "plotly==5.24.1",
+  "plotly==6.1.1",
   "seaborn==0.13.2",
+  "kaleido==1.2.0",
 ]
 
 [project.scripts]

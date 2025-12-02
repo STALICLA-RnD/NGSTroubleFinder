@@ -62,12 +62,10 @@ class TroubleFinder:
             print(f"{self.metadata} file not found")
             quit()
 
-        if not all(
-            [
-                item in metadata.columns
-                for item in ["Sample_Name", "Bam_Path", "Sequencing", "Sex"]
-            ]
-        ):
+        if not all([
+            item in metadata.columns
+            for item in ["Sample_Name", "Bam_Path", "Sequencing", "Sex"]
+        ]):
             print(
                 "Malformed metadata file: Metadata must contain Sample_Name, Bam_Path, Sequencing and Sex"
             )
@@ -200,10 +198,24 @@ class TroubleFinder:
 
         for sample1, sample2 in itertools.combinations(sample_list, 2):
             relatedness, ibs2 = processor.processRelatedness(sample1, sample2)
-            relatednessTable.append([sample1.name, sample2.name, relatedness, ibs2])
+            averageContamination = (sample1.contamination + sample2.contamination) / 2
+            relatednessTable.append([
+                sample1.name,
+                sample2.name,
+                relatedness,
+                ibs2,
+                averageContamination,
+            ])
 
         relatednessTable = pd.DataFrame(
-            relatednessTable, columns=["Sample1", "Sample2", "relatedness", "ibs2"]
+            relatednessTable,
+            columns=[
+                "Sample1",
+                "Sample2",
+                "relatedness",
+                "ibs2",
+                "Average Contamination",
+            ],
         )
         return relatednessTable
 
@@ -227,12 +239,12 @@ class TroubleFinder:
 
         if sample.transcriptomicSex == "Unknown":
             if sample.originalSex != sample.genomicSex:
-                qc += ["SEX MISMATCH"]
+                qc += ["SEX"]
         else:
             if not (
                 sample.originalSex == sample.genomicSex == sample.transcriptomicSex
             ):
-                qc += ["SEX MISMATCH"]
+                qc += ["SEX"]
 
         if sample.contamination > 0.01:
             qc += ["CONTAMINATION"]
