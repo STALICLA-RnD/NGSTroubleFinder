@@ -132,10 +132,6 @@ class Plotter:
             },
         )
 
-        full_fig = fig.full_figure_for_development(warn=False)
-        min_x, max_x = full_fig.layout.xaxis.range
-        min_y, max_y = full_fig.layout.yaxis.range
-
         fig.add_shape(
             type="rect",
             x0=min_x,
@@ -248,10 +244,6 @@ class Plotter:
 
         fig.add_hline(10, fillcolor=self.staliclaColors[0])
         fig.add_vline(1, fillcolor=self.staliclaColors[1])
-
-        full_fig = fig.full_figure_for_development(warn=False)
-        min_x, max_x = full_fig.layout.xaxis.range
-        min_y, max_y = full_fig.layout.yaxis.range
 
         fig.add_shape(
             type="rect",
